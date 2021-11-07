@@ -12,8 +12,8 @@ const Confirm = () => {
   console.log('pickup', pickup)
   console.log('dropoff', dropoff)
 
-  const [ pickupCoordinates, setPickupCoordinates] = useState()
-  const [ dropoffCoordinates, setDropoffCoordinates] = useState()
+  const [ pickupCoordinates, setPickupCoordinates] = useState([0, 0])
+  const [ dropoffCoordinates, setDropoffCoordinates] = useState([0, 0])
 
   const getPickupCoordinates = (pickup) => {
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${pickup}.json?`+
@@ -48,15 +48,20 @@ const Confirm = () => {
 
   return (
     <Wrapper>
-      <Link href="/">
-        <BackButton src="https://img.icons8.com/ios-filled/50/000000/left.png" />
-      </Link>
+      <ButtonContainer>
+        <Link href="/search">
+          <BackButton src="https://img.icons8.com/ios-filled/50/000000/left.png" />
+        </Link>
+      </ButtonContainer>
       <Map 
         pickupCoordinates={pickupCoordinates} 
         dropoffCoordinates={dropoffCoordinates}
       />
       <RideContainer>
-        <RideSelector />
+        <RideSelector 
+          pickupCoordinates={pickupCoordinates} 
+          dropoffCoordinates={dropoffCoordinates}
+        />
         <ConfirmButtonContainer>
           <ConfirmButton>
             Confirm UberX
@@ -72,8 +77,11 @@ export default Confirm
 const Wrapper = tw.div`
   flex h-screen flex-col
 `
+const ButtonContainer = tw.div`
+  cursor-pointer w-10 h-10 bg-white rounded-full absolute z-10 m-2 shadow-md 
+`
 const BackButton = tw.img`
-  cursor-pointer w-10 h-10 bg-white rounded-full absolute z-10
+  object-contain
 `
 const RideContainer = tw.div`
   flex-1 flex flex-col h-1/2
